@@ -21,7 +21,7 @@ public class Main {
 		Glossary glossary = new Glossary();
 		// Used to record the files list containing a certain word.
 		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices =
-			new HashMap<Integer, HashSet<Integer>>();
+ new HashMap<Integer, HashSet<Integer>>();
 
 		String tknDir = "Dataset/mttkn/";
 		String bndDir = "Dataset/mttkn_bnd/";
