@@ -63,6 +63,14 @@ public class Story {
 	}
 
 	/**
+	 * @param timestamp
+	 */
+	public Story(String timestamp) {
+		this.words = new Vector<Integer>();
+		this.timeStamp = timestamp;
+	}
+
+	/**
 	 * @param words
 	 * @param timeStamp
 	 */
@@ -274,7 +282,7 @@ public class Story {
 	public void addWord(int wordID) {
 		this.words.add(wordID);
 	}
-	
+
 	/**
 	 * calculate tfidf of this story, based on the corpus.
 	 * 
