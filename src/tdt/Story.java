@@ -4,12 +4,6 @@
 
 package tdt;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -19,6 +13,7 @@ import java.util.Vector;
  * @author Zewei Wu
  */
 public class Story {
+	// ---------- FIELDS ------------------------------------------------------
 	/**
 	 * Default value of 'topicID', meaning the story is clustered.
 	 */
@@ -45,13 +40,11 @@ public class Story {
 	 */
 	private int topicID = DEFAULT_TOPIC_ID;
 	/**
-	 * <word id, times it appears in this story>. Before using, make sure
-	 * setWordsCount is invoked.
+	 * Before using, make sure setWordsCount is invoked.
 	 */
 	private HashMap<Integer, Integer> wordsCount;
 	/**
-	 * <word id, term frequency>. Before using, make sure setTermFrequency() is
-	 * invoked.
+	 * Before using, make sure setTermFrequency() is invoked.
 	 */
 	private HashMap<Integer, Double> termFrequency;
 	/**
@@ -60,6 +53,7 @@ public class Story {
 	 */
 	private HashMap<Integer, Double> tfidf;
 
+	// ---------- CONSTRUCTORS ------------------------------------------------
 	/**
 	 * UNSUGGESTED: Default constructor, used only for temporary story.
 	 */
@@ -78,6 +72,7 @@ public class Story {
 		this.timeStamp = timeStamp;
 	}
 
+	// ---------- GETTERS & SETTERS--------------------------------------------
 	/**
 	 * @return the storyID
 	 */
@@ -127,31 +122,6 @@ public class Story {
 	//	}
 
 	/**
-	 * Add a word to the words
-	 */
-	public void addWord(int wordID) {
-		words.add(wordID);
-	}
-
-	/**
-	 * @param wordID
-	 * @return true if this story contains a certain word.
-	 */
-	public boolean containsWordID(int wordID) {
-		if (!this.wordsCount.isEmpty()) {
-			return this.wordsCount.containsKey(wordID);
-		} else {
-			// Option 1: first build up the wordsCount, then use wordsCount.find()
-			// Option 2: sort the words, then find (using the binary search)
-			for (int curWordID : this.words) {
-				if (curWordID == wordID)
-					return true;
-			}
-			return false;
-		}
-	}
-
-	/**
 	 * @return the timeStamp
 	 */
 	public String getTimeStamp() {
@@ -182,29 +152,6 @@ public class Story {
 	}
 
 	/**
-	 * @return true if the story is already clustered.
-	 */
-	public boolean isClustered() {
-		return this.topicID != Story.DEFAULT_TOPIC_ID;
-	}
-
-	/**
-	 * Initialize the wordsCount
-	 */
-	public void initWordsCount() {
-		this.wordsCount = new HashMap<Integer, Integer>();
-		for (int curWordID : this.words) {
-			if (this.wordsCount.containsKey(curWordID)) {
-				this.wordsCount.put(curWordID,
-					this.wordsCount.get(curWordID) + 1);
-			} else {
-				this.wordsCount.put(curWordID, 1);
-			}
-		}
-
-	}
-
-	/**
 	 * Before using this function, make sure the initWordsCount() was called.
 	 * 
 	 * @return the wordsCount
@@ -221,21 +168,6 @@ public class Story {
 	 */
 	public void setWordsCount(HashMap<Integer, Integer> wordsCount) {
 		this.wordsCount = wordsCount;
-	}
-
-	/**
-	 * Initialize the termFrequency
-	 */
-	public void initTermFrequency() {
-		if (this.wordsCount == null || this.wordsCount.isEmpty())
-			this.initWordsCount();
-
-		this.termFrequency = new HashMap<Integer, Double>();
-
-		double length = this.words.size();
-		for (Entry<Integer, Integer> pair : this.wordsCount.entrySet()) {
-			this.termFrequency.put(pair.getKey(), pair.getValue() / length);
-		}
 	}
 
 	/**
@@ -256,13 +188,6 @@ public class Story {
 	}
 
 	/**
-	 * Initialize the tfidf.
-	 */
-	public void initTfidf() {
-		this.tfidf = new HashMap<Integer, Double>();
-	}
-
-	/**
 	 * @return the tfidf
 	 */
 	public HashMap<Integer, Double> getTfidf() {
@@ -277,6 +202,79 @@ public class Story {
 		this.tfidf = tfidf;
 	}
 
+	// ---------- BOOLEAN -----------------------------------------------------
+	/**
+	 * @param wordID
+	 * @return true if this story contains a certain word.
+	 */
+	public boolean containsWordID(int wordID) {
+		if (!this.wordsCount.isEmpty()) {
+			return this.wordsCount.containsKey(wordID);
+		} else {
+			// Option 1: first build up the wordsCount, then use wordsCount.find()
+			// Option 2: sort the words, then find (using the binary search)
+			for (int curWordID : this.words) {
+				if (curWordID == wordID)
+					return true;
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * @return true if the story is already clustered.
+	 */
+	public boolean isClustered() {
+		return this.topicID != Story.DEFAULT_TOPIC_ID;
+	}
+
+	// ---------- INITIALIZATION ----------------------------------------------
+	/**
+	 * Initialize the wordsCount
+	 */
+	public void initWordsCount() {
+		this.wordsCount = new HashMap<Integer, Integer>();
+		for (int curWordID : this.words) {
+			if (this.wordsCount.containsKey(curWordID)) {
+				this.wordsCount.put(curWordID,
+					this.wordsCount.get(curWordID) + 1);
+			} else {
+				this.wordsCount.put(curWordID, 1);
+			}
+		}
+
+	}
+
+	/**
+	 * Initialize the termFrequency
+	 */
+	public void initTermFrequency() {
+		if (this.wordsCount == null || this.wordsCount.isEmpty())
+			this.initWordsCount();
+
+		this.termFrequency = new HashMap<Integer, Double>();
+
+		double length = this.words.size();
+		for (Entry<Integer, Integer> pair : this.wordsCount.entrySet()) {
+			this.termFrequency.put(pair.getKey(), pair.getValue() / length);
+		}
+	}
+
+	/**
+	 * Initialize the tfidf.
+	 */
+	public void initTfidf() {
+		this.tfidf = new HashMap<Integer, Double>();
+	}
+
+	// ---------- OTHERS ------------------------------------------------------
+	/**
+	 * Add a word to the words
+	 */
+	public void addWord(int wordID) {
+		this.words.add(wordID);
+	}
+	
 	/**
 	 * calculate tfidf of this story, based on the corpus.
 	 * 
@@ -315,76 +313,5 @@ public class Story {
 			}
 		}
 		return result;
-	}
-
-	/**
-	 * Set 'tfidf' for all stories in corpus.
-	 * 
-	 * @param corpus
-	 * @param storiesIndexWithCertainWord
-	 */
-	static void setTFIDFOfCorpus(Vector<Story> corpus,
-		HashMap<Integer, HashSet<Integer>> storiesIndexWithCertainWord) {
-		System.out.println(">>> Start calculating tfidf of corpus......");
-
-		for (int count = 0; count < corpus.size(); ++count) {
-			if (count % 10 == 0)
-				System.out.println(count + " / " + corpus.size());
-			corpus.get(count).setTfidfBasedOnCorpus(corpus,
-				storiesIndexWithCertainWord);
-		}
-
-		System.out.println(">>> Calculating tfidf's done.");
-	}
-
-	/**
-	 * Save the tfidf's of corpus to tfidfFile
-	 * 
-	 * @param corpus
-	 * @param tfidfFile
-	 * @throws IOException
-	 */
-	static void saveTFIDF(Vector<Story> corpus, String tfidfFile)
-		throws IOException {
-		FileOutputStream fos = new FileOutputStream(tfidfFile);
-		OutputStreamWriter osw = new OutputStreamWriter(fos);
-		System.out.println(">>> Start saving tfidf......");
-		for (Story curStory : corpus) {
-			HashMap<Integer, Double> tfidf = curStory.getTfidf();
-			for (Entry<Integer, Double> pair : tfidf.entrySet()) {
-				osw.append(pair.getKey() + ":" + pair.getValue() + " ");
-			}
-			osw.append("\n");
-		}
-		System.out.println(">>> Saving tfidf done. ");
-		osw.close();
-		fos.close();
-	}
-
-	/**
-	 * Load the tfidf's of corpus from tfidfFile
-	 * 
-	 * @param corpus
-	 * @param tfidfFile
-	 * @throws IOException
-	 */
-	static void loadTFIDF(Vector<Story> corpus, String tfidfFile)
-		throws IOException {
-		FileInputStream fis = new FileInputStream(tfidfFile);
-		InputStreamReader isr = new InputStreamReader(fis);
-		BufferedReader br = new BufferedReader(isr);
-		String line = null;
-		HashMap<Integer, Double> tfidf;
-		int i = 0;
-		while ((line = br.readLine()) != null) {
-			tfidf = new HashMap<Integer, Double>();
-			String[] pairs = line.split(" ");
-			for (String pair : pairs) {
-				String[] i2d = pair.split(":");
-				tfidf.put(Integer.parseInt(i2d[0]), Double.parseDouble(i2d[1]));
-			}
-			corpus.get(i).setTfidf(tfidf);
-		}
-		fis.close();
 	}
 }
