@@ -6,8 +6,6 @@ package tdt;
 import java.util.HashMap;
 
 /**
- * TODO: class Glossary: Zitong
- * 
  * @author Zitong Wang
  */
 public class Glossary {
@@ -40,8 +38,10 @@ public class Glossary {
 		}
 	}
 
-	private HashMap<Integer, String> glossaryIntToString = new HashMap<Integer, String>();
+	private HashMap<Integer, String> glossaryIntToString =
+		new HashMap<Integer, String>();
 
-	private HashMap<String, Integer> glossaryStringToInt = new HashMap<String, Integer>();
+	private HashMap<String, Integer> glossaryStringToInt =
+		new HashMap<String, Integer>();
 
 }

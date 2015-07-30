@@ -14,8 +14,6 @@ import java.util.Scanner;
 import java.util.Vector;
 
 /**
- * TODO: class DataPreprocessor: Zitong
- * 
  * @author Zitong Wang
  */
 class DataPreprocessor {
@@ -39,8 +37,8 @@ class DataPreprocessor {
 	 * @param bndDir
 	 */
 	public void doDataPreprocessing(Vector<Story> corpus, Glossary glossary,
-			HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices,
-			String tknDir, String bndDir) {
+		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices, String tknDir,
+		String bndDir) {
 
 		System.out.println("> Start DataPreprocessing......");
 
@@ -59,8 +57,8 @@ class DataPreprocessor {
 	 * @param bndDir
 	 */
 	public void readCorpus(Vector<Story> corpus, Glossary glossary,
-			HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices,
-			String tknDir, String bndDir) {
+		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices, String tknDir,
+		String bndDir) {
 		System.out.println(">> Start reading corpus......");
 
 		System.out.println("Please choose");
@@ -73,11 +71,11 @@ class DataPreprocessor {
 		while (true) {
 			if (choice.equals("1")) {
 				readCorpusFromFile(corpus, glossary, wordIDToStoryIndices,
-						tknDir, bndDir);
+					tknDir, bndDir);
 				break;
 			} else if (choice.equals("2")) {
 				readCorpusFromDirectory(corpus, glossary, wordIDToStoryIndices,
-						tknDir, bndDir);
+					tknDir, bndDir);
 				break;
 			} else {
 				System.out.println("Invalid input, please input again!");
@@ -100,8 +98,8 @@ class DataPreprocessor {
 	 * @param bndDir
 	 */
 	public void readCorpusFromFile(Vector<Story> corpus, Glossary glossary,
-			HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices,
-			String tknDir, String bndDir) {
+		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices, String tknDir,
+		String bndDir) {
 		LOOP: while (true) {
 			// the id of the first and the last words of a story
 			Vector<Integer> Brecid = new Vector<Integer>();
@@ -121,7 +119,7 @@ class DataPreprocessor {
 			readBndFile(corpus, bndFile, Brecid, Erecid);
 
 			readTknFile(corpus, tknFile, Brecid, Erecid, glossary,
-					wordIDToStoryIndices);
+				wordIDToStoryIndices);
 
 			System.out.println("Continue?(Y/N)");
 			String choice = in.nextLine();
@@ -151,9 +149,9 @@ class DataPreprocessor {
 	 * @param bndDir
 	 */
 	public void readCorpusFromDirectory(Vector<Story> corpus,
-			Glossary glossary,
-			HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices,
-			String tknDir, String bndDir) {
+		Glossary glossary,
+		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices, String tknDir,
+		String bndDir) {
 		File directoryBnd = new File(bndDir);
 		File[] fileBnd = directoryBnd.listFiles();
 		Scanner in = new Scanner(System.in);
@@ -166,7 +164,7 @@ class DataPreprocessor {
 		int numOfFilesRead = 0;
 
 		System.out
-				.println("Input the number of files want to be read (0 represents all)");
+			.println("Input the number of files want to be read (0 represents all)");
 		numOfFileToBeRead = in.nextInt();
 		in.close();
 
@@ -178,11 +176,11 @@ class DataPreprocessor {
 			System.out.println("No bnd file found!");
 		} else {
 			for (int i = 0; i < fileBnd.length
-					&& numOfFilesRead < numOfFileToBeRead; i++) {
+				&& numOfFilesRead < numOfFileToBeRead; i++) {
 				System.out.println(fileBnd[i].getName() + "\tfound!");
 
 				readBndFile(corpus, fileBnd[i].getAbsolutePath(), Brecid,
-						Erecid);
+					Erecid);
 
 				numOfFilesRead++;
 			}
@@ -196,11 +194,11 @@ class DataPreprocessor {
 			System.out.println("No bnd file found!");
 		} else {
 			for (int i = 0; i < fileTkn.length
-					&& numOfFilesRead < numOfFileToBeRead; i++) {
+				&& numOfFilesRead < numOfFileToBeRead; i++) {
 				System.out.println(fileTkn[i].getName() + "\tfound!");
 
 				readTknFile(corpus, fileTkn[i].getAbsolutePath(), Brecid,
-						Erecid, glossary, wordIDToStoryIndices);
+					Erecid, glossary, wordIDToStoryIndices);
 
 				numOfFilesRead++;
 			}
@@ -216,8 +214,8 @@ class DataPreprocessor {
 	 * @param Erecid
 	 */
 	public void readBndFile(Vector<Story> corpus, String bndFile,
-			Vector<Integer> Brecid, Vector<Integer> Erecid) {
-		int numOfStories = 0;
+		Vector<Integer> Brecid, Vector<Integer> Erecid) {
+		//		int numOfStories = 0;
 
 		File file = new File(bndFile);
 		assert (file.exists());
@@ -233,7 +231,6 @@ class DataPreprocessor {
 		try {
 			reader.readLine();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -266,16 +263,17 @@ class DataPreprocessor {
 				// retrieve the timestamp
 				timestamp = timestamp.substring(9, timestamp.length() - 9);
 
-				BrecidInt = Integer
-						.parseInt(BrecidWithRedundancy.split("=")[1]);
+				BrecidInt =
+					Integer.parseInt(BrecidWithRedundancy.split("=")[1]);
 
 				String ErecidTemp = ErecidWithRedundancy.split("=")[1];
-				ErecidInt = Integer.parseInt(ErecidTemp.substring(0,
+				ErecidInt =
+					Integer.parseInt(ErecidTemp.substring(0,
 						ErecidTemp.length() - 1));
 
 				Story newStroy = new Story(timestamp);
 				corpus.addElement(newStroy);
-				numOfStories++;
+				//				numOfStories++;
 
 				Brecid.add(BrecidInt);
 				Erecid.add(ErecidInt);
@@ -300,8 +298,8 @@ class DataPreprocessor {
 	 * @param wordIDToStoryIndices
 	 */
 	public void readTknFile(Vector<Story> corpus, String tknFile,
-			Vector<Integer> Brecid, Vector<Integer> Erecid, Glossary glossay,
-			HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices) {
+		Vector<Integer> Brecid, Vector<Integer> Erecid, Glossary glossay,
+		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices) {
 		File file = new File(tknFile);
 		assert (file.exists());
 
@@ -316,7 +314,6 @@ class DataPreprocessor {
 		try {
 			reader.readLine();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
