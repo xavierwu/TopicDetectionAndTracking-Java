@@ -26,12 +26,12 @@ public class Story {
 	/**
 	 * Default value of 'storyID', meaning the story is just a tmp story.
 	 */
-	//	private final static int DEFAULT_STORY_ID = -1;
+	// private final static int DEFAULT_STORY_ID = -1;
 
 	/**
 	 * It seems to be of no use?
 	 */
-	//	private int storyID = DEFAULT_STORY_ID;
+	// private int storyID = DEFAULT_STORY_ID;
 	/**
 	 * the index of each plain word, refer to the glossary
 	 */
@@ -69,11 +69,20 @@ public class Story {
 	}
 
 	/**
+	 * 
+	 * @param timestamp
+	 */
+	public Story(String timestamp) {
+		this.words = new Vector<Integer>();
+		this.timeStamp = timestamp;
+	}
+
+	/**
 	 * @param words
 	 * @param timeStamp
 	 */
 	public Story(Vector<Integer> words, String timeStamp) {
-		//		this.storyID = storyID;
+		// this.storyID = storyID;
 		this.words = words;
 		this.timeStamp = timeStamp;
 	}
@@ -81,17 +90,17 @@ public class Story {
 	/**
 	 * @return the storyID
 	 */
-	//	public int getStoryID() {
-	//		return storyID;
-	//	}
+	// public int getStoryID() {
+	// return storyID;
+	// }
 
 	/**
 	 * @param storyID
 	 *            the storyID to set
 	 */
-	//	public void setStoryID(int storyID) {
-	//		this.storyID = storyID;
-	//	}
+	// public void setStoryID(int storyID) {
+	// this.storyID = storyID;
+	// }
 
 	/**
 	 * @return the words
@@ -104,9 +113,9 @@ public class Story {
 	 * @param words
 	 *            the words to set
 	 */
-	//	public void setWords(Vector<Integer> words) {
-	//		this.words = words;
-	//	}
+	// public void setWords(Vector<Integer> words) {
+	// this.words = words;
+	// }
 
 	/**
 	 * @param index
@@ -122,9 +131,9 @@ public class Story {
 	 * @param index
 	 * @param value
 	 */
-	//	public void setWord(int index, int value) {
-	//		this.words.set(index, value);
-	//	}
+	// public void setWord(int index, int value) {
+	// this.words.set(index, value);
+	// }
 
 	/**
 	 * Add a word to the words
@@ -141,7 +150,8 @@ public class Story {
 		if (!this.wordsCount.isEmpty()) {
 			return this.wordsCount.containsKey(wordID);
 		} else {
-			// Option 1: first build up the wordsCount, then use wordsCount.find()
+			// Option 1: first build up the wordsCount, then use
+			// wordsCount.find()
 			// Option 2: sort the words, then find (using the binary search)
 			for (int curWordID : this.words) {
 				if (curWordID == wordID)
@@ -196,7 +206,7 @@ public class Story {
 		for (int curWordID : this.words) {
 			if (this.wordsCount.containsKey(curWordID)) {
 				this.wordsCount.put(curWordID,
-					this.wordsCount.get(curWordID) + 1);
+						this.wordsCount.get(curWordID) + 1);
 			} else {
 				this.wordsCount.put(curWordID, 1);
 			}
@@ -284,7 +294,7 @@ public class Story {
 	 * @param wordIDToStoryIndices
 	 */
 	public void setTfidfBasedOnCorpus(Vector<Story> corpus,
-		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices) {
+			HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices) {
 		if (this.termFrequency == null || this.termFrequency.isEmpty())
 			this.initTermFrequency();
 
@@ -324,14 +334,14 @@ public class Story {
 	 * @param storiesIndexWithCertainWord
 	 */
 	static void setTFIDFOfCorpus(Vector<Story> corpus,
-		HashMap<Integer, HashSet<Integer>> storiesIndexWithCertainWord) {
+			HashMap<Integer, HashSet<Integer>> storiesIndexWithCertainWord) {
 		System.out.println(">>> Start calculating tfidf of corpus......");
 
 		for (int count = 0; count < corpus.size(); ++count) {
 			if (count % 10 == 0)
 				System.out.println(count + " / " + corpus.size());
 			corpus.get(count).setTfidfBasedOnCorpus(corpus,
-				storiesIndexWithCertainWord);
+					storiesIndexWithCertainWord);
 		}
 
 		System.out.println(">>> Calculating tfidf's done.");
@@ -345,7 +355,7 @@ public class Story {
 	 * @throws IOException
 	 */
 	static void saveTFIDF(Vector<Story> corpus, String tfidfFile)
-		throws IOException {
+			throws IOException {
 		FileOutputStream fos = new FileOutputStream(tfidfFile);
 		OutputStreamWriter osw = new OutputStreamWriter(fos);
 		System.out.println(">>> Start saving tfidf......");
@@ -369,7 +379,7 @@ public class Story {
 	 * @throws IOException
 	 */
 	static void loadTFIDF(Vector<Story> corpus, String tfidfFile)
-		throws IOException {
+			throws IOException {
 		FileInputStream fis = new FileInputStream(tfidfFile);
 		InputStreamReader isr = new InputStreamReader(fis);
 		BufferedReader br = new BufferedReader(isr);

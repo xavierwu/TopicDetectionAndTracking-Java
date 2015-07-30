@@ -19,7 +19,7 @@ public class Main {
 		Vector<Story> corpus = new Vector<Story>();
 		Glossary glossary = new Glossary();
 		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices =
-			new HashMap<Integer, HashSet<Integer>>();
+ new HashMap<Integer, HashSet<Integer>>();
 
 		String tknDir = "Dataset/mttkn/";
 		String bndDir = "Dataset/mttkn_bnd/";
