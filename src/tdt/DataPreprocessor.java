@@ -20,6 +20,8 @@ class DataPreprocessor {
 
 	final int MAX_FILES = 999999;
 
+	int numOfStories = 0;
+	
 	/**
 	 * Preprocess the data
 	 */
@@ -215,7 +217,6 @@ class DataPreprocessor {
 	 */
 	public void readBndFile(Vector<Story> corpus, String bndFile,
 		Vector<Integer> Brecid, Vector<Integer> Erecid) {
-		//		int numOfStories = 0;
 
 		File file = new File(bndFile);
 		assert (file.exists());
@@ -273,7 +274,6 @@ class DataPreprocessor {
 
 				Story newStroy = new Story(timestamp);
 				corpus.addElement(newStroy);
-				//				numOfStories++;
 
 				Brecid.add(BrecidInt);
 				Erecid.add(ErecidInt);
@@ -287,6 +287,7 @@ class DataPreprocessor {
 		System.out.println("read bnd file done!");
 	}
 
+	
 	/**
 	 * Read from tkn files, get the words for each story and set the glossary.
 	 * 
@@ -324,7 +325,7 @@ class DataPreprocessor {
 		// 3. "tr=Y", it is of no use currently
 		// 4. word, very important
 		int recid = 1;
-		int numOfStories = 0;
+
 		boolean beginOfAStroy = true;
 
 		String newLine;
@@ -366,6 +367,8 @@ class DataPreprocessor {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		numOfStories++;
 
 		System.out.println("read tkn file done!");
 	}
