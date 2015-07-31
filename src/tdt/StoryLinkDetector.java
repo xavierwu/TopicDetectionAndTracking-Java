@@ -103,10 +103,10 @@ public class StoryLinkDetector {
 		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices,
 		String tfidfFile, boolean isToLoadTfidf) {
 		if (isToLoadTfidf) { // load tfidf from tfidfFile
+			loadTFIDF(corpus, tfidfFile);
+		} else { // save tfidf to tfidfFile
 			setTFIDFOfCorpus(corpus, wordIDToStoryIndices);
 			saveTFIDF(corpus, tfidfFile);
-		} else { // save tfidf to tfidfFile
-			loadTFIDF(corpus, tfidfFile);
 		}
 	}
 
