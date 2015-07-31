@@ -14,20 +14,25 @@ public class Main {
 
 	/**
 	 * @param args
+	 *            Unused.
 	 */
 	public static void main(String[] args) {
 		Vector<Story> corpus = new Vector<Story>();
 		Glossary glossary = new Glossary();
+		// Used to record the files list containing a certain word.
 		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices =
 			new HashMap<Integer, HashSet<Integer>>();
 
 		String tknDir = "Dataset/mttkn/";
 		String bndDir = "Dataset/mttkn_bnd/";
 
+		System.out.println("====== Data Preprocessing Start ======");
 		DataPreprocessor dataPreprocessor = new DataPreprocessor();
 		dataPreprocessor.doDataPreprocessing(corpus, glossary,
 			wordIDToStoryIndices, tknDir, bndDir);
+		System.out.println("====== Data Preprocessing End ======");
 
+		System.out.println();
 		System.out.println("corpus.size() = " + corpus.size());
 		assert (corpus.size() > 0);
 		System.out.println("glossary.size() = " + glossary.size());
@@ -35,27 +40,40 @@ public class Main {
 		System.out.println("wordIDToStoryIndices.size() = "
 			+ wordIDToStoryIndices.size());
 		assert (wordIDToStoryIndices.size() > 0);
+		System.out.println();
 
-		StoryLinkDetector storyLinkDetector = new StoryLinkDetector();
-		storyLinkDetector.doStoryLinkDetection(corpus, wordIDToStoryIndices);
+		System.out.println("====== Story Link Detection Start ======");
+		StoryLinkDetector.doStoryLinkDetection(corpus, wordIDToStoryIndices,
+			"Dataset/tfidf.dat", false);
+		System.out.println("====== Story Link Detection End ======");
 
+		System.out.println("====== Topic Detection Start ======");
 		TopicDetector topicDetector = new TopicDetector();
 		int numOfTopics = topicDetector.doTopicDetection(corpus);
+		System.out.println("====== Topic Detection End ======");
 
+		System.out.println();
 		System.out.println("numOfTopics = " + numOfTopics);
 		assert (numOfTopics > 0);
+		System.out.println();
 
-		FirstStoryDetector firstStoryDetector = new FirstStoryDetector();
-		Vector<Story> firstStories = firstStoryDetector.doFirstStoryDetection();
+		System.out.println("====== First Story Detection Start ======");
+		Vector<Story> firstStories =
+			FirstStoryDetector.doFirstStoryDetection(corpus, numOfTopics);
+		System.out.println("====== First Story Detection End ======");
 
+		System.out.println();
 		System.out.println("firstStories.size() = " + firstStories.size());
 		assert (firstStories.size() == numOfTopics);
+		System.out.println();
 
+		System.out.println("====== Evaluation Start ======");
 		Evaluator evaluator = new Evaluator();
 		evaluator.doEvaluation();
+		System.out.println("====== Evaluation End ======");
 
-		Presentator presentator =
-			new Presentator(firstStories, corpus, glossary, numOfTopics);
-		presentator.doPresentation();
+		System.out.println("====== Presentation Start ======");
+		Presentator.doPresentation(firstStories, corpus, glossary, numOfTopics);
+		System.out.println("====== Presentation End ======");
 	}
 }
