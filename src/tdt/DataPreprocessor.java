@@ -333,14 +333,14 @@ class DataPreprocessor {
 				String word;
 
 				// this means a new tkn file is read
-				if (Brecid.get(numOfStories) == 1 && beginOfAStroy) {
-					recid = 1;
-					beginOfAStroy = false;
-				}
-
 				if (recid > Erecid.get(numOfStories)) {
 					numOfStories++;
 					beginOfAStroy = true;
+				}
+				
+				if (Brecid.get(numOfStories) == 1 && beginOfAStroy) {
+					recid = 1;
+					beginOfAStroy = false;
 				}
 
 				String temp[] = newLine.split(" ");
