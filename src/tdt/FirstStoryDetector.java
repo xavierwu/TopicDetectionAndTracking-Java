@@ -6,18 +6,25 @@ package tdt;
 import java.util.Vector;
 
 /**
- * TODO: class FirstStoryDetector: Zewei
- * 
  * @author Zewei Wu
  */
-class FirstStoryDetector {
-	Vector<Story> firstStories;
-
-	FirstStoryDetector() {
-		firstStories = new Vector<Story>();
-	}
-
-	Vector<Story> doFirstStoryDetection() {
+public class FirstStoryDetector {
+	protected static Vector<Story> doFirstStoryDetection(Vector<Story> corpus,
+		int numOfTopics) {
+		Vector<Story> firstStories = new Vector<Story>();
+		for (int curTopic = 0; curTopic < numOfTopics; ++curTopic) {
+			Story firstStoryOfCurTopic = null;
+			for (Story curStory : corpus) {
+				if (curStory.getTopicID() == curTopic) {
+					if (firstStoryOfCurTopic == null
+						|| curStory.getTimeStamp().compareTo(
+							firstStoryOfCurTopic.getTimeStamp()) < 0)
+						firstStoryOfCurTopic = curStory;
+				}
+			}
+			assert (firstStoryOfCurTopic != null);
+			firstStories.add(firstStoryOfCurTopic);
+		}
 		return firstStories;
 	}
 }
