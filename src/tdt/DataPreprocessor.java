@@ -29,6 +29,24 @@ class DataPreprocessor {
 	}
 
 	/**
+	 * Read from sgm files, set the 'corpus' and 'glossary', and do some other
+	 * preprocessing.
+	 * 
+	 * @param corpus
+	 * @param glossary
+	 * @param wordIDToStoryIndices
+	 * @param actualFirstStories
+	 * @param sgmDir
+	 * @param ansFile
+	 */
+	public void doDataPreprocessing(Vector<Story> corpus, Glossary glossary,
+		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices,
+		Vector<Story> actualFirstStories, String sgmDir, String ansFile) {
+		readCorpus(corpus, glossary, wordIDToStoryIndices, sgmDir);
+		readAnswer(actualFirstStories, ansFile);
+	}
+
+	/**
 	 * Read from files, set the 'corpus' and 'glossary', and do some other
 	 * preprocessing.
 	 * 
@@ -42,13 +60,21 @@ class DataPreprocessor {
 		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices,
 		Vector<Story> actualFirstStories, String tknDir, String bndDir,
 		String ansFile) {
-
-		System.out.println("> Start DataPreprocessing......");
-
 		readCorpus(corpus, glossary, wordIDToStoryIndices, tknDir, bndDir);
 		readAnswer(actualFirstStories, ansFile);
+	}
 
-		System.out.println("> DataPreprocessing Done.");
+	/**
+	 * TODO: readCorpus(...) using sgm files, set the 'corpus' and 'glossary'.
+	 * 
+	 * @param corpus
+	 * @param glossary
+	 * @param wordIDToStoryIndices
+	 * @param sgmDir
+	 */
+	public void readCorpus(Vector<Story> corpus, Glossary glossary,
+		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices, String sgmDir) {
+
 	}
 
 	/**
@@ -63,8 +89,6 @@ class DataPreprocessor {
 	public void readCorpus(Vector<Story> corpus, Glossary glossary,
 		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices, String tknDir,
 		String bndDir) {
-		System.out.println(">> Start reading corpus......");
-
 		System.out.println("Please choose");
 		System.out.println("1. Read from the specific file");
 		System.out.println("2. Read from files in the directory");
@@ -88,8 +112,6 @@ class DataPreprocessor {
 		}
 
 		in.close();
-
-		System.out.println(">> Reading corpus done.");
 	}
 
 	/**

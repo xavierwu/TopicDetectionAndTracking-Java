@@ -14,8 +14,8 @@ public class Evaluator {
 	public Evaluator() {
 	}
 
-	public static double doEvaluation(Vector<Story> actualFirstStories,
-		Vector<Story> firstStories) {
+	public static double doEvaluation(Vector<Story> corpus,
+		Vector<Story> actualFirstStories, Vector<Story> firstStories) {
 		return 0.0;
 	}
 }

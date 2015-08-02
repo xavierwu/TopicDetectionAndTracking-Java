@@ -24,14 +24,17 @@ public class Main {
 		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices =
 			new HashMap<Integer, HashSet<Integer>>();
 
-		String tknDir = "Dataset/mttkn/";
-		String bndDir = "Dataset/mttkn_bnd/";
+		//		String tknDir = "Dataset/mttkn/";
+		//		String bndDir = "Dataset/mttkn_bnd/";
+		String sgmDir = "Dataset/sgm/";
 		String ansFile = "Dataset/answer.txt";
 
 		System.out.println("====== Data Preprocessing Start ======");
 		DataPreprocessor dataPreprocessor = new DataPreprocessor();
+		//	dataPreprocessor.doDataPreprocessing(corpus, glossary,
+		//		wordIDToStoryIndices, actualFirstStories, tknDir, bndDir, ansFile);
 		dataPreprocessor.doDataPreprocessing(corpus, glossary,
-			wordIDToStoryIndices, actualFirstStories, tknDir, bndDir, ansFile);
+			wordIDToStoryIndices, actualFirstStories, sgmDir, ansFile);
 		System.out.println("====== Data Preprocessing End ======");
 
 		System.out.println();
@@ -71,7 +74,7 @@ public class Main {
 
 		System.out.println("====== Evaluation Start ======");
 		double result =
-			Evaluator.doEvaluation(actualFirstStories, firstStories);
+			Evaluator.doEvaluation(corpus, actualFirstStories, firstStories);
 		System.out.println("result = " + result);
 		System.out.println("====== Evaluation End ======");
 
