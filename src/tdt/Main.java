@@ -19,17 +19,19 @@ public class Main {
 	public static void main(String[] args) {
 		Vector<Story> corpus = new Vector<Story>();
 		Glossary glossary = new Glossary();
+		Vector<Story> actualFirstStories = new Vector<Story>();
 		// Used to record the files list containing a certain word.
 		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices =
 			new HashMap<Integer, HashSet<Integer>>();
 
 		String tknDir = "Dataset/mttkn/";
 		String bndDir = "Dataset/mttkn_bnd/";
+		String ansFile = "Dataset/answer.txt";
 
 		System.out.println("====== Data Preprocessing Start ======");
 		DataPreprocessor dataPreprocessor = new DataPreprocessor();
 		dataPreprocessor.doDataPreprocessing(corpus, glossary,
-			wordIDToStoryIndices, tknDir, bndDir);
+			wordIDToStoryIndices, actualFirstStories, tknDir, bndDir, ansFile);
 		System.out.println("====== Data Preprocessing End ======");
 
 		System.out.println();
@@ -68,8 +70,9 @@ public class Main {
 		System.out.println();
 
 		System.out.println("====== Evaluation Start ======");
-		Evaluator evaluator = new Evaluator();
-		evaluator.doEvaluation();
+		double result =
+			Evaluator.doEvaluation(actualFirstStories, firstStories);
+		System.out.println("result = " + result);
 		System.out.println("====== Evaluation End ======");
 
 		System.out.println("====== Presentation Start ======");

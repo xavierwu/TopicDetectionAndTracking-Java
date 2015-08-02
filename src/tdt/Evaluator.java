@@ -3,17 +3,19 @@
  */
 package tdt;
 
+import java.util.Vector;
+
 /**
  * TODO: class Evaluator: Peng
+ * 
  * @author Peng Kang
- *
  */
-class Evaluator {
-	Evaluator(){
-		
+public class Evaluator {
+	public Evaluator() {
 	}
-	
-	void doEvaluation(){
-		
+
+	public static double doEvaluation(Vector<Story> actualFirstStories,
+		Vector<Story> firstStories) {
+		return 0.0;
 	}
 }

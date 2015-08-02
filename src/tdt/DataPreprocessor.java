@@ -21,7 +21,7 @@ class DataPreprocessor {
 	final int MAX_FILES = 999999;
 
 	int numOfStories = 0;
-	
+
 	/**
 	 * Preprocess the data
 	 */
@@ -39,12 +39,14 @@ class DataPreprocessor {
 	 * @param bndDir
 	 */
 	public void doDataPreprocessing(Vector<Story> corpus, Glossary glossary,
-		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices, String tknDir,
-		String bndDir) {
+		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices,
+		Vector<Story> actualFirstStories, String tknDir, String bndDir,
+		String ansFile) {
 
 		System.out.println("> Start DataPreprocessing......");
 
 		readCorpus(corpus, glossary, wordIDToStoryIndices, tknDir, bndDir);
+		readAnswer(actualFirstStories, ansFile);
 
 		System.out.println("> DataPreprocessing Done.");
 	}
@@ -287,7 +289,6 @@ class DataPreprocessor {
 		System.out.println("read bnd file done!");
 	}
 
-	
 	/**
 	 * Read from tkn files, get the words for each story and set the glossary.
 	 * 
@@ -338,7 +339,7 @@ class DataPreprocessor {
 					numOfStories++;
 					beginOfAStroy = true;
 				}
-				
+
 				if (Brecid.get(numOfStories) == 1 && beginOfAStroy) {
 					recid = 1;
 					beginOfAStroy = false;
@@ -367,7 +368,7 @@ class DataPreprocessor {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		numOfStories++;
 
 		System.out.println("read tkn file done!");
@@ -384,5 +385,15 @@ class DataPreprocessor {
 		word = word.replaceAll("[^a-z0-9._]", "");
 
 		return word;
+	}
+
+	/**
+	 * TODO: readAnswer(...)
+	 * 
+	 * @param actualFirstStories
+	 * @param ansFile
+	 */
+	private void readAnswer(Vector<Story> actualFirstStories, String ansFile) {
+
 	}
 }
