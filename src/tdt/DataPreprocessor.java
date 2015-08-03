@@ -286,7 +286,11 @@ class DataPreprocessor {
 					while (!(newLine = reader.readLine()).equals("<TEXT>"))
 						;
 
-					while (!(newLine = reader.readLine()).equals("/<TEXT>")) {
+					while ((newLine = reader.readLine()) != null) {
+						if (newLine.equals("</TEXT>")) {
+							break;
+						}
+						
 						String wordsInALine[] = newLine.split(" ");
 
 						for (String word : wordsInALine) {
