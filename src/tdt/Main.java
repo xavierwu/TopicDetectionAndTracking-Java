@@ -19,17 +19,22 @@ public class Main {
 	public static void main(String[] args) {
 		Vector<Story> corpus = new Vector<Story>();
 		Glossary glossary = new Glossary();
+		Vector<Story> actualFirstStories = new Vector<Story>();
 		// Used to record the files list containing a certain word.
 		HashMap<Integer, HashSet<Integer>> wordIDToStoryIndices =
 			new HashMap<Integer, HashSet<Integer>>();
 
-		String tknDir = "Dataset/mttkn/";
-		String bndDir = "Dataset/mttkn_bnd/";
+		//		String tknDir = "Dataset/mttkn/";
+		//		String bndDir = "Dataset/mttkn_bnd/";
+		String sgmDir = "Dataset/sgm/";
+		String ansFile = "Dataset/answer.txt";
 
 		System.out.println("====== Data Preprocessing Start ======");
 		DataPreprocessor dataPreprocessor = new DataPreprocessor();
+		//	dataPreprocessor.doDataPreprocessing(corpus, glossary,
+		//		wordIDToStoryIndices, actualFirstStories, tknDir, bndDir, ansFile);
 		dataPreprocessor.doDataPreprocessing(corpus, glossary,
-			wordIDToStoryIndices, tknDir, bndDir);
+			wordIDToStoryIndices, actualFirstStories, sgmDir, ansFile);
 		System.out.println("====== Data Preprocessing End ======");
 
 		System.out.println();
@@ -68,8 +73,9 @@ public class Main {
 		System.out.println();
 
 		System.out.println("====== Evaluation Start ======");
-		Evaluator evaluator = new Evaluator();
-		evaluator.doEvaluation();
+		double normCdet =
+			Evaluator.doEvaluation(corpus, actualFirstStories, firstStories);
+		System.out.println("normCdet = " + normCdet);
 		System.out.println("====== Evaluation End ======");
 
 		System.out.println("====== Presentation Start ======");
