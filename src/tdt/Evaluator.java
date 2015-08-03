@@ -7,9 +7,9 @@ import java.util.Arrays;
 import java.util.Vector;
 
 /**
- * class Evaluator: Peng
+ * This class is used to evaluate the performance of the first story detection.
  * 
- * @author Peng Kang
+ * @author Peng Kang, Zewei Wu.
  */
 public class Evaluator {
 
@@ -19,89 +19,131 @@ public class Evaluator {
 	 * @param firstStories
 	 * @return normCdet, 0~1
 	 */
-	public static double doEvaluation(Vector<Story> corpus,
+	protected static double doEvaluation(Vector<Story> corpus,
 		Vector<Story> actualFirstStories, Vector<Story> firstStories) {
-		// Variables
-		double normCdet = 0;
-		double Cdet = 0;
-		double PMiss = 0, PFa = 0;
-		double CMiss = 1, CFa = 0.1, Ptarget = 0.02;
-		double Pnon_target = 1 - Ptarget;
-		double norm_mini =
-			(CMiss * Ptarget < CFa * Pnon_target) ? CMiss * Ptarget : CFa
-				* Pnon_target;
+		return doEvaluation_v2(corpus, actualFirstStories, firstStories);
+	}
 
-		int[] answer = new int[300];
-		double count1 = 0, count2 = 0;
-		double newTopics = 0;
-		double oldTopics = 0;
-		double dectectedNewTopics = 0, undectectedNewTopics = 0;
-		double mistakenTopics = 0;
+	/**
+	 * @author Zewei Wu
+	 * @param corpus
+	 * @param actualFirstStories
+	 * @param firstStories
+	 * @return
+	 */
+	private static double doEvaluation_v2(Vector<Story> corpus,
+		Vector<Story> actualFirstStories, Vector<Story> firstStories) {
 
-		// Eg: Timestamp - 20030408, with eight digits in the leftmost positions
-
-		int timeMin = 0, timeMax = 0;
-
-		// find the newest and latest news in the testing datasets
-		for (int i = 0; i < corpus.size(); i++) {
-			String str1 = corpus.get(i).getTimeStamp();
-			String str2 = str1.substring(0, 8);
-			int cmp1 = Integer.parseInt(str2);
-			timeMax = timeMax > cmp1 ? timeMax : cmp1;
-			timeMin = timeMin < cmp1 ? timeMin : cmp1;
+		int numOfHits = 0;
+		for (int i = 0; i < actualFirstStories.size(); ++i) {
+			for (int j = 0; j < firstStories.size(); ++j) {
+				String str1 = actualFirstStories.get(i).getTimeStamp();
+				String str2 = firstStories.get(j).getTimeStamp();
+				if (str1.compareTo(str2) == 0) {
+					++numOfHits;
+					break;
+				}
+			}
 		}
 
-		// sort the actualFirstStories by timeline
+		double PMiss =
+			(actualFirstStories.size() - numOfHits)
+				/ Double.valueOf(actualFirstStories.size());
+		double CMiss = 1.0;
+		double Ptarget = 0.02;
+
+		double PFa =
+			(firstStories.size() - numOfHits)
+				/ Double.valueOf(firstStories.size());
+		double CFa = 0.1;
+		double Pnon_target = 1 - Ptarget;
+
+		double Cdet = PMiss * (CMiss * Ptarget) + PFa * (CFa * Pnon_target);
+		double norm_mini =
+			(CMiss * Ptarget < CFa * Pnon_target) ? (CMiss * Ptarget)
+				: (CFa * Pnon_target);
+		double normCdet = Cdet / norm_mini;
+
+		return normCdet;
+	}
+
+	/**
+	 * @author Peng Kang
+	 * @param corpus
+	 * @param actualFirstStories
+	 * @param firstStories
+	 * @return
+	 */
+	@SuppressWarnings("unused")
+	private static double doEvaluation_v1(Vector<Story> corpus,
+		Vector<Story> actualFirstStories, Vector<Story> firstStories) {
+
+		// Find out the newest and oldest news in the corpus
+		// Eg: Timestamp - 20030408, with eight digits in the leftmost positions
+		// yyyymmdd.hhmm.XXXX 
+		String timeMin = "99999999";
+		String timeMax = "00000000";
+		for (Story tmp : corpus) {
+			String str = tmp.getTimeStamp().substring(0, 8);
+			if (str.compareTo(timeMax) > 0)
+				timeMax = str;
+			if (str.compareTo(timeMin) < 0)
+				timeMin = str;
+		}
+
+		// sort the actualFirstStories by timestamp
+		String[] answer = new String[250];
 		for (int j = 0; j < actualFirstStories.size(); j++) {
-			String str3 = actualFirstStories.get(j).getTimeStamp();
-			String str4 = str3.substring(0, 8);
-			int cmp2 = Integer.parseInt(str4);
-			answer[j] = cmp2;
+			answer[j] =
+				actualFirstStories.get(j).getTimeStamp().substring(0, 8);
 		}
 		Arrays.sort(answer);
 
 		// the size of actualFirstStories is 250
-		for (int j = 0; j < actualFirstStories.size(); j++) {
-			if (timeMin >= answer[j])
-				count1++;
-			if (timeMax >= answer[j])
-				count2++;
+		double count1 = 0, count2 = 0;
+		for (int j = 0; j < answer.length; j++) {
+			if (answer[j].compareTo(timeMin) <= 0)
+				++count1;
+			if (answer[j].compareTo(timeMax) <= 0)
+				++count2;
 		}
 
 		// the number of new topics in the testing datasets
-		newTopics = count2 - count1 + 1;
+		double newTopics = count2 - count1 + 1;
 
 		// the number of old topics in the testing datasets
-		oldTopics = corpus.size() - newTopics;
+		double oldTopics = corpus.size() - newTopics;
 
 		// the number of new topics which are not detected
 		// Maybe too strict
+		double detectedNewTopics = 0;
 		for (int i = 0; i < firstStories.size(); i++) {
-			String str1 = firstStories.get(i).getTimeStamp();
-			String str2 = str1.substring(0, 8);
-			int cmp1 = Integer.parseInt(str2);
+			String str2 = firstStories.get(i).getTimeStamp().substring(0, 8);
 			for (int j = 0; j < actualFirstStories.size(); j++) {
-				String str3 = actualFirstStories.get(j).getTimeStamp();
-				String str4 = str3.substring(0, 8);
-				int cmp2 = Integer.parseInt(str4);
-				if (cmp1 == cmp2)
-					dectectedNewTopics++;
+				String str4 =
+					actualFirstStories.get(j).getTimeStamp().substring(0, 8);
+				if (str2.compareTo(str4) == 0)
+					detectedNewTopics++;
 			}
 		}
 
-		undectectedNewTopics = newTopics - dectectedNewTopics;
-
-		assert (undectectedNewTopics >= 0);
+		// Calculate Cdet & Norm_Cdet
+		double undetectedNewTopics = newTopics - detectedNewTopics;
+		double PMiss = undetectedNewTopics / newTopics;
+		double CMiss = 1.0;
+		double Ptarget = 0.02;
 
 		// the number of some old topics we mistake for new topics
-		mistakenTopics = firstStories.size() - dectectedNewTopics;
+		double mistakenTopics = firstStories.size() - detectedNewTopics;
+		double PFa = mistakenTopics / oldTopics;
+		double CFa = 0.1;
+		double Pnon_target = 1 - Ptarget;
 
-		// Calculate Cdet & Norm_Cdet
-		PMiss = undectectedNewTopics / newTopics;
-		PFa = mistakenTopics / oldTopics;
-
-		Cdet = CMiss * PMiss * Ptarget + CFa * PFa * Pnon_target;
-		normCdet = Cdet / norm_mini;
+		double norm_mini =
+			(CMiss * Ptarget < CFa * Pnon_target) ? (CMiss * Ptarget)
+				: (CFa * Pnon_target);
+		double Cdet = PMiss * (CMiss * Ptarget) + PFa * (CFa * Pnon_target);
+		double normCdet = Cdet / norm_mini;
 
 		return normCdet;
 	}

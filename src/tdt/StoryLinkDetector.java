@@ -120,7 +120,7 @@ public class StoryLinkDetector {
 		HashMap<Integer, HashSet<Integer>> storiesIndexWithCertainWord) {
 		System.out.println("Calculating tfidf......");
 		for (int count = 0; count < corpus.size(); ++count) {
-			if (count % 50 == 0)
+			if (count % 100 == 0)
 				System.out.println(count + " / " + corpus.size());
 			corpus.get(count).setTfidfBasedOnCorpus(corpus,
 				storiesIndexWithCertainWord);

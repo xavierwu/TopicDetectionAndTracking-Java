@@ -45,6 +45,9 @@ public class Main {
 		System.out.println("wordIDToStoryIndices.size() = "
 			+ wordIDToStoryIndices.size());
 		assert (wordIDToStoryIndices.size() > 0);
+		System.out.println("actualFirstStories.size() = "
+			+ actualFirstStories.size());
+		assert (actualFirstStories.size() > 0);
 		System.out.println();
 
 		System.out.println("====== Story Link Detection Start ======");
@@ -72,14 +75,16 @@ public class Main {
 		assert (firstStories.size() == numOfTopics);
 		System.out.println();
 
+		System.out.println("====== Presentation Start ======");
+		String resultFile = "Dataset/result.dat";
+		Presentator.doPresentation(firstStories, corpus, glossary, numOfTopics,
+			resultFile);
+		System.out.println("====== Presentation End ======");
+
 		System.out.println("====== Evaluation Start ======");
 		double normCdet =
 			Evaluator.doEvaluation(corpus, actualFirstStories, firstStories);
 		System.out.println("normCdet = " + normCdet);
 		System.out.println("====== Evaluation End ======");
-
-		System.out.println("====== Presentation Start ======");
-		Presentator.doPresentation(firstStories, corpus, glossary, numOfTopics);
-		System.out.println("====== Presentation End ======");
 	}
 }
