@@ -73,9 +73,9 @@ public class Main {
 		System.out.println();
 
 		System.out.println("====== Evaluation Start ======");
-		double result =
+		double normCdet =
 			Evaluator.doEvaluation(corpus, actualFirstStories, firstStories);
-		System.out.println("result = " + result);
+		System.out.println("normCdet = " + normCdet);
 		System.out.println("====== Evaluation End ======");
 
 		System.out.println("====== Presentation Start ======");
