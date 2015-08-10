@@ -43,7 +43,7 @@ class TopicDetector {
 		// KMeans(corpus, numOfTopics);
 
 		// return numOfTopics;
-		return DBSCAN(corpus, 1, 3);
+		return DBSCAN(corpus, 0.98, 5);
 	}
 
 	/**
@@ -173,18 +173,18 @@ class TopicDetector {
 	}
 
 	/**
-	 * DBSCAN clustering. DBSCAN requires two parameters: ¦Å (eps, similarity
+	 * DBSCAN clustering. DBSCAN requires two parameters: Â¦Ã… (eps, similarity
 	 * here) and the minimum number of points required to form a dense region[a]
 	 * (minPts). It starts with an arbitrary starting point that has not been
-	 * visited. This point's ¦Å-neighborhood is retrieved, and if it contains
+	 * visited. This point's Â¦Ã…-neighborhood is retrieved, and if it contains
 	 * sufficiently many points, a cluster is started. Otherwise, the point is
 	 * labeled as noise. Note that this point might later be found in a
-	 * sufficiently sized ¦Å-environment of a different point and hence be made
+	 * sufficiently sized Â¦Ã…-environment of a different point and hence be made
 	 * part of a cluster.
 	 * 
-	 * If a point is found to be a dense part of a cluster, its ¦Å-neighborhood
+	 * If a point is found to be a dense part of a cluster, its Â¦Ã…-neighborhood
 	 * is also part of that cluster. Hence, all points that are found within the
-	 * ¦Å-neighborhood are added, as is their own ¦Å-neighborhood when they are
+	 * Â¦Ã…-neighborhood are added, as is their own Â¦Ã…-neighborhood when they are
 	 * also dense. This process continues until the density-connected cluster is
 	 * completely found. Then, a new unvisited point is retrieved and processed,
 	 * leading to the discovery of a further cluster or noise.
@@ -233,9 +233,6 @@ class TopicDetector {
 					corpus.get(i));
 
 			if (similarity > minSimilarity && i != currentIndex) {
-				System.out.println(similarity);
-				System.out.println(corpus.get(i).getTfidf());
-				System.out.println(corpus.get(currentIndex).getTfidf());
 				neighborPts.add(i);
 			}
 		}
