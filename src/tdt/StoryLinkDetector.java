@@ -85,9 +85,13 @@ public class StoryLinkDetector {
 				squareSum2 += tfidf2.get(key) * tfidf2.get(key);
 			}
 		}
-
 		similarity = innerProduct / Math.sqrt(squareSum1 * squareSum2);
 
+		// WARNING: the 0.0001 was set manually here. 
+		if (similarity > 1 && similarity - 1 <= 0.0001){
+			similarity = 1;
+		}
+		
 		return similarity;
 	}
 
@@ -120,7 +124,7 @@ public class StoryLinkDetector {
 		HashMap<Integer, HashSet<Integer>> storiesIndexWithCertainWord) {
 		System.out.println("Calculating tfidf......");
 		for (int count = 0; count < corpus.size(); ++count) {
-			if (count % 50 == 0)
+			if (count % 100 == 0)
 				System.out.println(count + " / " + corpus.size());
 			corpus.get(count).setTfidfBasedOnCorpus(corpus,
 				storiesIndexWithCertainWord);

@@ -32,7 +32,7 @@ public class Story {
 	 */
 	private Vector<Integer> words;
 	/**
-	 * yyyymmdd.hhmm.???
+	 * yyyymmdd.hhmm.XXXX
 	 */
 	private String timeStamp;
 	/**
@@ -322,4 +322,6 @@ public class Story {
 		}
 		return result;
 	}
+	
+	
 }
