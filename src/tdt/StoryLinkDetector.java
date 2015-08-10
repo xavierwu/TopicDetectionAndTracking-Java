@@ -85,9 +85,13 @@ public class StoryLinkDetector {
 				squareSum2 += tfidf2.get(key) * tfidf2.get(key);
 			}
 		}
-
 		similarity = innerProduct / Math.sqrt(squareSum1 * squareSum2);
 
+		// WARNING: the 0.0001 was set manually here. 
+		if (similarity > 1 && similarity - 1 <= 0.0001){
+			similarity = 1;
+		}
+		
 		return similarity;
 	}
 
